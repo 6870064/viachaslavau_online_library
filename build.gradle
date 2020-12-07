@@ -19,7 +19,18 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'  // плагин для правильной загрузки зависимостей spring
+apply plugin: 'com.bmuschko.tomcat'
+//apply plugin: 'com.eclipse-wtp'
 
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.bmuschko:gradle-tomcat-plugin:2.4.2'
+	}
+}
 
 war {
 	archiveBaseName = 'library'
@@ -43,10 +54,17 @@ ext['hibernate.version'] = '5.4.2.Final'
 
 
 configurations {
-	compile.exclude module: 'spring-boot-starter-tomcat'// исключаем Tomcat, т.к. мы используем GlassFish
+//	compile.exclude module: 'spring-boot-starter-tomcat'// исключаем Tomcat, т.к. мы используем GlassFish
 }
 
 dependencies {
+
+
+def tomcatVersion = '9.0.37'
+	tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+	"org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+	"org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
 
 	// для стартеров будет использоваться версия, указанная в переменной springBootVersion
 	implementation("org.springframework.boot:spring-boot-starter-web") // веб возможности Spring
@@ -57,7 +75,7 @@ dependencies {
 
 	implementation 'com.google.guava:guava:+'// утилиты по разным направлениям Java
 
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.13' // драйвер MySQL (используем версию 5)
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.19' // драйвер MySQL (используем версию 8.0.19)
 	providedCompile 'javax:javaee-api:7.0' // в GlassFish (Payara) уже есть эта библиотека, поэтому добавляем только для компиляции
 
 	providedCompile 'org.projectlombok:lombok:1.18.6' // уменьшение кода
@@ -74,6 +92,9 @@ dependencies {
 
 	implementation('org.primefaces.themes:bootstrap:1.0.10')
 
-
-
 }
+	tomcat {
+		httpPort = 9090
+		enableSSL = true
+		contextPath = '/library-spring'
+ }

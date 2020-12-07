@@ -20,7 +20,7 @@ public class AspectMessageHandler {
 
 
     // не нужно перехватывать все ошибки в коде, AOP все сделает за нас
-    @Around("execution(* ru.javabegin.training.library.jsfui.controller.*.deleteAction(..))")
+    @Around("execution(* viachaslavau.onlinelibrary.jsfui.controller.*.deleteAction(..))")
 // перехватывать все ошибки во всех методах подпакетов и классов
     public void deleteConstraint(ProceedingJoinPoint jp) {
 
@@ -45,12 +45,12 @@ public class AspectMessageHandler {
 
 
                 // если это ошибка constraint при удалении
-                if (((UnexpectedRollbackException) throwable).getMostSpecificCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
-
-                    // показываем сообщение пользователю на странице
-                    context.addMessage(null, new FacesMessage(null, bundle.getString("constraint_delete_record")));
-
-                }
+//                if (((UnexpectedRollbackException) throwable).getMostSpecificCause() instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException) {
+//
+//                    // показываем сообщение пользователю на странице
+//                    context.addMessage(null, new FacesMessage(null, bundle.getString("constraint_delete_record")));
+//
+//                }
             }
         }
 
@@ -63,7 +63,7 @@ public class AspectMessageHandler {
 
 
 
-    @Around("execution(* ru.javabegin.training.library.dao.*.save(..))")
+    @Around("execution(* viachaslavau.onlinelibrary.dao.*.save(..))")
     public void addNewSprValue(ProceedingJoinPoint jp) {
 
         try {

@@ -37,6 +37,3 @@ public class AuthHandler implements AuthenticationFailureHandler {
 
 
 }
-
-
-}
